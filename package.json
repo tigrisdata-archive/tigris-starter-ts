@@ -7,7 +7,7 @@
     "clean": "rm -rf dist",
     "lint": "node ./node_modules/eslint/bin/eslint src/**/*.ts",
     "lint-fix": "node ./node_modules/eslint/bin/eslint --fix src/**/*.ts",
-    "build": "npm run clean && npm run lint && npx tsc",
+    "build": "npm run clean && npm install && npm run lint && npx tsc",
     "start": "node dist/index.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
   },
