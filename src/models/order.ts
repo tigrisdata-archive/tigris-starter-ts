@@ -5,7 +5,7 @@ import {
 } from "@tigrisdata/core/dist/types";
 
 export interface Order extends TigrisCollectionType {
-    orderId: number;
+    orderId?: number;
     userId: number;
     productItems: ProductItem[]
     orderTotal: number;

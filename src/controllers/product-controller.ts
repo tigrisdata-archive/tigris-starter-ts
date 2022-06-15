@@ -1,7 +1,6 @@
 import express, {NextFunction, Request, Response, Router} from "express";
 import {Collection, DB} from "@tigrisdata/core";
 import {Product} from "../models/product";
-import {SelectorFilterOperator} from "@tigrisdata/core/dist/types";
 import {Controller} from "./controller";
 
 export class ProductController implements Controller {
@@ -19,14 +18,11 @@ export class ProductController implements Controller {
 
     public getProduct = async (req: Request, res: Response, next: NextFunction) => {
         this.products.readOne({
-            op: SelectorFilterOperator.EQ,
-            fields: {
-                productId: Number.parseInt(req.params.id)
-            }
+            productId: Number.parseInt(req.params.id)
         }).then(product => {
-            if(product !== undefined) {
+            if (product !== undefined) {
                 res.status(200).json(product);
-            }else{
+            } else {
                 res.status(404).json({error: 'Product not found'});
             }
         }).catch(error => {
@@ -45,10 +41,7 @@ export class ProductController implements Controller {
 
     public deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
         this.products.delete({
-            op: SelectorFilterOperator.EQ,
-            fields: {
-                productId: Number.parseInt(req.params.id)
-            }
+            productId: Number.parseInt(req.params.id)
         }).then(response => {
             res.status(200).json(response);
         }).catch(error => {

@@ -5,7 +5,7 @@ import {
 } from "@tigrisdata/core/dist/types";
 
 export interface User extends TigrisCollectionType{
-    userId: number,
+    userId?: number,
     name: string,
     balance: number
 }

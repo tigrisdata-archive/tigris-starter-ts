@@ -1,7 +1,6 @@
 import express, {NextFunction, Request, Response, Router} from "express";
 import {Collection, DB} from "@tigrisdata/core";
 import {User} from "../models/user";
-import {SelectorFilterOperator} from "@tigrisdata/core/dist/types";
 import {Controller} from "./controller";
 
 export class UserController implements Controller {
@@ -19,10 +18,7 @@ export class UserController implements Controller {
 
     public getUser = async (req: Request, res: Response, next: NextFunction) => {
         this.users.readOne({
-            op: SelectorFilterOperator.EQ,
-            fields: {
-                userId: Number.parseInt(req.params.id)
-            }
+            userId: Number.parseInt(req.params.id)
         }).then(user => {
             if (user !== undefined) {
                 res.status(200).json(user);
@@ -45,10 +41,7 @@ export class UserController implements Controller {
 
     public deleteUser = async (req: Request, res: Response, next: NextFunction) => {
         this.users.delete({
-            op: SelectorFilterOperator.EQ,
-            fields: {
-                userId: Number.parseInt(req.params.id)
-            }
+            userId: Number.parseInt(req.params.id)
         }).then(response => {
             res.status(200).json(response);
         }).catch(error => {
