@@ -1,7 +1,6 @@
 import express, {NextFunction, Request, Response, Router} from "express";
 import {Collection, DB} from "@tigrisdata/core";
 import {Order} from "../models/order";
-import {SelectorFilterOperator} from "@tigrisdata/core/dist/types";
 import {Controller} from "./controller";
 
 export class OrderController implements Controller {
@@ -21,14 +20,11 @@ export class OrderController implements Controller {
 
     public getOrder = async (req: Request, res: Response, next: NextFunction) => {
         this.orders.readOne({
-            op: SelectorFilterOperator.EQ,
-            fields: {
-                orderId: Number.parseInt(req.params.id)
-            }
+            orderId: Number.parseInt(req.params.id)
         }).then(order => {
-            if(order !== undefined) {
+            if (order !== undefined) {
                 res.status(200).json(order);
-            }else {
+            } else {
                 res.status(404).json({error: 'Order not found'});
             }
         }).catch(error => {
@@ -38,10 +34,7 @@ export class OrderController implements Controller {
 
     public deleteOrder = async (req: Request, res: Response, next: NextFunction) => {
         this.orders.delete({
-            op: SelectorFilterOperator.EQ,
-            fields: {
-                orderId: Number.parseInt(req.params.id)
-            }
+            orderId: Number.parseInt(req.params.id)
         }).then(response => {
             res.status(200).json(response);
         }).catch(error => {
