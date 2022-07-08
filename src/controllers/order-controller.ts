@@ -19,7 +19,7 @@ export class OrderController implements Controller {
     }
 
     public getOrder = async (req: Request, res: Response, next: NextFunction) => {
-        this.orders.readOne({
+        this.orders.findOne({
             orderId: Number.parseInt(req.params.id)
         }).then(order => {
             if (order !== undefined) {
