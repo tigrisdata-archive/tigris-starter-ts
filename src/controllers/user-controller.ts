@@ -17,7 +17,7 @@ export class UserController implements Controller {
     }
 
     public getUser = async (req: Request, res: Response, next: NextFunction) => {
-        this.users.readOne({
+        this.users.findOne({
             userId: Number.parseInt(req.params.id)
         }).then(user => {
             if (user !== undefined) {

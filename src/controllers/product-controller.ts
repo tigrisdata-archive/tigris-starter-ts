@@ -17,7 +17,7 @@ export class ProductController implements Controller {
     }
 
     public getProduct = async (req: Request, res: Response, next: NextFunction) => {
-        this.products.readOne({
+        this.products.findOne({
             productId: Number.parseInt(req.params.id)
         }).then(product => {
             if (product !== undefined) {
