@@ -2,6 +2,7 @@ import express, {NextFunction, Request, Response, Router} from "express";
 import {Collection, DB} from "@tigrisdata/core";
 import {User} from "../models/user";
 import {Controller} from "./controller";
+import {SearchRequest, SearchResult} from "@tigrisdata/core/dist/search/types";
 
 export class UserController implements Controller {
 
@@ -30,6 +31,24 @@ export class UserController implements Controller {
         });
     };
 
+    public searchUsers = async (req: Request, res: Response, next: NextFunction) => {
+        const searchRequest: SearchRequest<User> = req.body;
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        this.users.search(searchRequest, {
+            onNext(result: SearchResult<User>) {
+                res.write(JSON.stringify(result));
+            },
+            onError(error: Error) {
+                res.end();
+                next(error);
+            },
+            onEnd() {
+                res.end();
+            }
+        });
+    };
+
     public createUser = async (req: Request, res: Response, next: NextFunction) => {
         const user: User = req.body;
         this.users.insert(user).then(user => {
@@ -52,6 +71,7 @@ export class UserController implements Controller {
     setupRoutes(app: express.Application) {
         this.router.post(`${this.path}/create`, this.createUser);
         this.router.get(`${this.path}/:id`, this.getUser);
+        this.router.post(`${this.path}/search`, this.searchUsers);
         this.router.delete(`${this.path}/:id`, this.deleteUser);
         app.use('/', this.router);
     }
