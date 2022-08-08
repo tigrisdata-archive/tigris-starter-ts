@@ -33,14 +33,14 @@ tigris local up
 
 ## Compile and start the application
 ```shell
-$> npm run build && npm run start
+npm run build && npm run start
 ```
 
 ## Test the application in new terminal window
 
 ### Insert users
 
-Run following commands to create two users: Jane and John
+Run following commands to create two users: John and Jane
 
 ```shell
 curl localhost:8080/users/create \
@@ -56,7 +56,7 @@ curl localhost:8080/users/create \
 
 ### Insert products
 
-Run the following commands to insert two products: Avocado and Gold
+Run the following commands to insert products
 
 ```shell
 curl localhost:8080/products/create \
@@ -67,7 +67,7 @@ curl localhost:8080/products/create \
 curl localhost:8080/products/create \
     -X POST \
     -H 'Content-Type: application/json' \
-    -d '{"name":"Avocado Oil","price":80,"quantity":5}'
+    -d '{"name":"Avocado Oil","price":80,"quantity":15}'
     
 curl localhost:8080/products/create \
     -X POST \
@@ -77,8 +77,7 @@ curl localhost:8080/products/create \
 
 ### Check the balances and stock
 
-Now go ahead and confirm that both John's balance and the Avocado stock is
-up-to-date.
+Now go ahead and confirm that data has been persisted in DB
 
 ```shell
 curl http://localhost:8080/users/1
