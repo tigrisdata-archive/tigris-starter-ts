@@ -2,6 +2,7 @@ import express, {NextFunction, Request, Response, Router} from "express";
 import {Collection, DB} from "@tigrisdata/core";
 import {Product} from "../models/product";
 import {Controller} from "./controller";
+import {SearchRequest, SearchResult} from "@tigrisdata/core/dist/search/types";
 
 export class ProductController implements Controller {
 
@@ -30,6 +31,24 @@ export class ProductController implements Controller {
         });
     };
 
+    public searchProducts = async (req: Request, res: Response, next: NextFunction) => {
+        const searchRequest: SearchRequest<Product> = req.body;
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        this.products.search(searchRequest, {
+            onNext(result: SearchResult<Product>) {
+                res.write(JSON.stringify(result));
+            },
+            onError(error: Error) {
+                res.end();
+                next(error);
+            },
+            onEnd() {
+                res.end();
+            }
+        });
+    };
+
     public createProduct = async (req: Request, res: Response, next: NextFunction) => {
         const product: Product = req.body;
         this.products.insert(product).then(product => {
@@ -52,6 +71,7 @@ export class ProductController implements Controller {
     setupRoutes(app: express.Application) {
         this.router.post(`${this.path}/create`, this.createProduct);
         this.router.get(`${this.path}/:id`, this.getProduct);
+        this.router.post(`${this.path}/search`, this.searchProducts);
         this.router.delete(`${this.path}/:id`, this.deleteProduct);
         app.use('/', this.router);
     }
