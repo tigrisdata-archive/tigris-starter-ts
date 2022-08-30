@@ -17,9 +17,10 @@ export class App {
     constructor() {
         this.app = express();
         this.port = 8080;
-        this.dbName = 'hello-db';
+        this.dbName = 'tigris_starter_ts';
         this.tigris = new Tigris({
-            serverUrl: 'localhost:8081'
+            serverUrl: 'localhost:8081',
+            insecureChannel: true
         });
 
         this.setup();

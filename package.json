@@ -20,14 +20,24 @@
     "data",
     "infrastructure"
   ],
-  "author": "Jigar Joshi (jmj@)",
+  "author": "Tigris Data (https://www.tigrisdata.com/)",
+  "contributors": [
+    {
+	    "name": "Jigar Joshi",
+		"url": "https://www.tigrisdata.com/"
+	},
+	{
+	    "name": "Adil Ansari",
+		"url": "https://www.tigrisdata.com/"
+	}
+  ],
   "license": "Apache 2.0",
   "bugs": {
     "url": "https://github.com/tigrisdata/tigris-starter-ts/issues"
   },
   "homepage": "https://github.com/tigrisdata/tigris-starter-ts#readme",
   "dependencies": {
-    "@tigrisdata/core": "^1.0.0-alpha.12",
+    "@tigrisdata/core": "^1.0.0-alpha.15",
     "dotenv": "^16.0.1",
     "express": "^4.18.1"
   },
