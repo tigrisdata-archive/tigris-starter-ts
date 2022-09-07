@@ -107,6 +107,22 @@ curl localhost:8080/products/search \
       }'
 ```
 
+## Publish
+```shell
+curl localhost:8080/product_updates/publish \
+    -X POST \
+    -H 'Content-Type: application/json' \
+    -d '{
+        "productId": 1,
+        "price": 34
+    }'
+```
+
+## Subscribe
+```shell
+curl -N -X POST localhost:8080/product_updates/subscribe
+```
+
 # License
 
 This software is licensed under the [Apache 2.0](LICENSE).

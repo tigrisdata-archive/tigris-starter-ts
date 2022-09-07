@@ -3,9 +3,11 @@ import {DB, Tigris} from "@tigrisdata/core";
 import {User, userSchema} from "./models/user";
 import {Product, productSchema} from "./models/product";
 import {Order, orderSchema} from "./models/order";
+import {ProductUpdate, productUpdateSchema} from "./models/product-update";
 import {UserController} from "./controllers/user-controller";
 import {ProductController} from "./controllers/product-controller";
 import {OrderController} from "./controllers/order-controller";
+import {ProductUpdateController} from "./controllers/product-update-controller";
 
 export class App {
     private readonly app: express.Application;
@@ -41,7 +43,8 @@ export class App {
         await Promise.all([
             this.db.createOrUpdateCollection<User>('users', userSchema),
             this.db.createOrUpdateCollection<Product>('products', productSchema),
-            this.db.createOrUpdateCollection<Order>('orders', orderSchema)
+            this.db.createOrUpdateCollection<Order>('orders', orderSchema),
+            this.db.createOrUpdateTopic<ProductUpdate>('product_updates', productUpdateSchema)
         ]);
     }
 
@@ -49,6 +52,7 @@ export class App {
         new UserController(this.db, this.app);
         new ProductController(this.db, this.app);
         new OrderController(this.db, this.app);
+        new ProductUpdateController(this.db, this.app);
     }
 
     public start() {
