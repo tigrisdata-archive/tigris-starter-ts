@@ -109,18 +109,19 @@ curl localhost:8080/products/search \
 
 ## Publish
 ```shell
-curl localhost:8080/product_updates/publish \
+curl localhost:8080/user_events/publish \
     -X POST \
     -H 'Content-Type: application/json' \
     -d '{
-        "productId": 1,
-        "price": 34
+        "eventId": 1,
+        "userId": 34,
+        "eventType": "login"
     }'
 ```
 
 ## Subscribe
 ```shell
-curl -N -X POST localhost:8080/product_updates/subscribe
+curl -N -X POST localhost:8080/user_events/subscribe
 ```
 
 # License

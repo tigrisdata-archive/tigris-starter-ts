@@ -3,11 +3,11 @@ import {DB, Tigris} from "@tigrisdata/core";
 import {User, userSchema} from "./models/user";
 import {Product, productSchema} from "./models/product";
 import {Order, orderSchema} from "./models/order";
-import {ProductUpdate, productUpdateSchema} from "./models/product-update";
+import {UserEvent, userEventSchema} from "./models/user-event";
 import {UserController} from "./controllers/user-controller";
 import {ProductController} from "./controllers/product-controller";
 import {OrderController} from "./controllers/order-controller";
-import {ProductUpdateController} from "./controllers/product-update-controller";
+import {UserEventController} from "./controllers/user-event-controller";
 
 export class App {
     private readonly app: express.Application;
@@ -44,7 +44,7 @@ export class App {
             this.db.createOrUpdateCollection<User>('users', userSchema),
             this.db.createOrUpdateCollection<Product>('products', productSchema),
             this.db.createOrUpdateCollection<Order>('orders', orderSchema),
-            this.db.createOrUpdateTopic<ProductUpdate>('product_updates', productUpdateSchema)
+            this.db.createOrUpdateTopic<UserEvent>('user_events', userEventSchema)
         ]);
     }
 
@@ -52,7 +52,7 @@ export class App {
         new UserController(this.db, this.app);
         new ProductController(this.db, this.app);
         new OrderController(this.db, this.app);
-        new ProductUpdateController(this.db, this.app);
+        new UserEventController(this.db, this.app);
     }
 
     public start() {
