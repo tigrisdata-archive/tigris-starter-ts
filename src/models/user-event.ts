@@ -5,23 +5,15 @@ import {
 } from "@tigrisdata/core/dist/types";
 
 export interface UserEvent extends TigrisTopicType {
-    eventId: number;
-    userId: number;
-    eventType: string;
-    eventDescription?: string;
+    userName: string;
+    message: string;
 }
 
 export const userEventSchema: TigrisSchema<UserEvent> = {
-    eventId: {
-        type: TigrisDataTypes.INT32
-    },
-    userId: {
-        type: TigrisDataTypes.INT32
-    },
-    eventType: {
+    userName: {
         type: TigrisDataTypes.STRING
     },
-    eventDescription: {
+    message: {
         type: TigrisDataTypes.STRING
     }
 };
