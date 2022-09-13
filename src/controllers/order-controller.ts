@@ -12,7 +12,7 @@ export class OrderController implements Controller {
 
     constructor(db: DB, app: express.Application) {
         this.orders = db.getCollection<Order>('orders');
-        this.path = '/order';
+        this.path = '/orders';
         this.router = Router();
         this.db = db;
         this.setupRoutes(app);
@@ -59,7 +59,7 @@ export class OrderController implements Controller {
 
     setupRoutes(app: express.Application) {
         this.router.get(`${this.path}/:id`, this.getOrder);
-        this.router.get(`${this.path}/all`, this.getAllOrders);
+        this.router.get(`${this.path}`, this.getAllOrders);
         this.router.delete(`${this.path}/:id`, this.deleteOrder);
         app.use('/', this.router);
     }
