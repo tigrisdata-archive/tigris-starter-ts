@@ -32,6 +32,21 @@ export class OrderController implements Controller {
         });
     };
 
+    public getAllOrders = async (req: Request, res: Response, next: NextFunction) => {
+        const ordersList: Order[] = [];
+        this.orders.findAllStream({
+            onEnd() {
+                res.status(200).json(ordersList);
+            },
+            onNext(doc: Order) {
+                ordersList.push(doc);
+            },
+            onError(error: Error) {
+                next(error);
+            },
+        });
+    };
+
     public deleteOrder = async (req: Request, res: Response, next: NextFunction) => {
         this.orders.delete({
             orderId: Number.parseInt(req.params.id)
@@ -44,6 +59,7 @@ export class OrderController implements Controller {
 
     setupRoutes(app: express.Application) {
         this.router.get(`${this.path}/:id`, this.getOrder);
+        this.router.get(`${this.path}/all`, this.getAllOrders);
         this.router.delete(`${this.path}/:id`, this.deleteOrder);
         app.use('/', this.router);
     }

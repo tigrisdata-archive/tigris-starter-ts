@@ -7,7 +7,6 @@ import {UserEvent, userEventSchema} from "./models/user-event";
 import {UserController} from "./controllers/user-controller";
 import {ProductController} from "./controllers/product-controller";
 import {OrderController} from "./controllers/order-controller";
-import {UserEventController} from "./controllers/user-event-controller";
 
 export class App {
     private readonly app: express.Application;
@@ -52,7 +51,6 @@ export class App {
         new UserController(this.db, this.app);
         new ProductController(this.db, this.app);
         new OrderController(this.db, this.app);
-        new UserEventController(this.db, this.app);
     }
 
     public start() {

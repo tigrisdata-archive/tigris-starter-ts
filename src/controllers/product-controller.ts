@@ -31,6 +31,21 @@ export class ProductController implements Controller {
         });
     };
 
+    public getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
+        const productList: Product[] = [];
+        this.products.findAllStream({
+            onEnd() {
+                res.status(200).json(productList);
+            },
+            onNext(doc: Product) {
+                productList.push(doc);
+            },
+            onError(error: Error) {
+                next(error);
+            },
+        });
+    };
+
     public searchProducts = async (req: Request, res: Response, next: NextFunction) => {
         const searchRequest: SearchRequest<Product> = req.body;
         res.statusCode = 200;
@@ -71,6 +86,7 @@ export class ProductController implements Controller {
     setupRoutes(app: express.Application) {
         this.router.post(`${this.path}/create`, this.createProduct);
         this.router.get(`${this.path}/:id`, this.getProduct);
+        this.router.get(`${this.path}`, this.getAllProducts);
         this.router.post(`${this.path}/search`, this.searchProducts);
         this.router.delete(`${this.path}/:id`, this.deleteProduct);
         app.use('/', this.router);
