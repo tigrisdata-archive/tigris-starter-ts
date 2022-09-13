@@ -2,10 +2,13 @@
 
 [![ts-ci](https://github.com/tigrisdata/tigris-starter-ts/actions/workflows/ts-ci.yml/badge.svg?branch=main)](https://github.com/tigrisdata/tigris-starter-ts/actions/workflows/ts-ci.yml)
 
-This is a Typescript web application that accepts HTTP requests to store and
-retrieve data in the Tigris backend. The application uses express framework.
+This is a TypeScript web application that demonstrates a basic version of an 
+ecommerce application that handles user, products and orders. The application
+demonstrates CRUD, search and event streaming functionality of Tigris. 
+The application uses express framework.
 
-For more information please refer to: [Tigris documentation](https://docs.tigrisdata.com)
+For more information please refer to: 
+[Tigris documentation](https://docs.tigrisdata.com)
 
 ## Clone the repo
 
@@ -14,31 +17,33 @@ git clone https://github.com/tigrisdata/tigris-starter-ts.git
 cd tigris-starter-ts
 ```
 
-## Install Tigris CLI
+## Tigris Local Development Environment
 
-### macOS
-```shell
-curl -sSL https://tigris.dev/cli-macos | sudo tar -xz -C /usr/local/bin
-```
+Startup local Tigris development environment listening on port 8081:
 
-### Linux
 ```shell
-curl -sSL https://tigris.dev/cli-linux | sudo tar -xz -C /usr/local/bin
-```
-
-## Start local Tigris instance
-```shell
-tigris local up
+docker run -d -p 8081:8081 tigrisdata/tigris-local
 ```
 
 ## Compile and start the application
+
 ```shell
 npm run build && npm run start
 ```
 
-## Test the application in new terminal window
+## Test the application
 
-### Insert users
+### Event Streaming
+
+Run the following command in a new terminal window to subscribe to user events
+
+```shell
+curl -N -X POST localhost:8080/users/subscribe
+```
+
+### CRUD operations
+
+#### Insert users
 
 Run following commands to create two users: John and Jane
 
@@ -47,14 +52,16 @@ curl localhost:8080/users/create \
     -X POST \
     -H 'Content-Type: application/json' \
     -d '{"name":"John","balance":100}'
-    
+```
+
+```shell    
 curl localhost:8080/users/create \
     -X POST \
     -H 'Content-Type: application/json' \
     -d '{"name":"Jane","balance":200}'
 ```
 
-### Insert products
+#### Insert products
 
 Run the following commands to insert products
 
@@ -75,16 +82,17 @@ curl localhost:8080/products/create \
     -d '{"name":"Gold","price":3000,"quantity":1}'
 ```
 
-### Check the balances and stock
+#### Read all users and products
 
 Now go ahead and confirm that data has been persisted in DB
 
 ```shell
-curl http://localhost:8080/users/1
-curl http://localhost:8080/products/1
+curl http://localhost:8080/users/all
+curl http://localhost:8080/products/all
 ```
 
 ### Search
+
 Now, search for users
 
 ```shell
@@ -105,23 +113,6 @@ curl localhost:8080/products/search \
         "searchFields": ["name"],
         "filter": {"price": {"$lt": 50}}
       }'
-```
-
-## Publish
-```shell
-curl localhost:8080/user_events/publish \
-    -X POST \
-    -H 'Content-Type: application/json' \
-    -d '{
-        "eventId": 1,
-        "userId": 34,
-        "eventType": "login"
-    }'
-```
-
-## Subscribe
-```shell
-curl -N -X POST localhost:8080/user_events/subscribe
 ```
 
 # License
