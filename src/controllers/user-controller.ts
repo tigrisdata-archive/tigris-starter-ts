@@ -130,7 +130,7 @@ export class UserController implements Controller {
     setupRoutes(app: express.Application) {
         this.router.post(`${this.path}/create`, this.createUser);
         this.router.get(`${this.path}/:id`, this.getUser);
-        this.router.get(`${this.path}/all`, this.getAllUsers);
+        this.router.get(`${this.path}`, this.getAllUsers);
         this.router.post(`${this.path}/search`, this.searchUsers);
         this.router.delete(`${this.path}/:id`, this.deleteUser);
         this.router.post(`${this.path}/subscribe`, this.subscribe);

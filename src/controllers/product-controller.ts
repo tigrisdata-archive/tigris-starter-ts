@@ -86,7 +86,7 @@ export class ProductController implements Controller {
     setupRoutes(app: express.Application) {
         this.router.post(`${this.path}/create`, this.createProduct);
         this.router.get(`${this.path}/:id`, this.getProduct);
-        this.router.get(`${this.path}/all`, this.getAllProducts);
+        this.router.get(`${this.path}`, this.getAllProducts);
         this.router.post(`${this.path}/search`, this.searchProducts);
         this.router.delete(`${this.path}/:id`, this.deleteProduct);
         app.use('/', this.router);

@@ -22,7 +22,7 @@ cd tigris-starter-ts
 Startup local Tigris development environment listening on port 8081:
 
 ```shell
-docker run -d -p 8081:8081 tigrisdata/tigris-local
+docker run -d -p 8081:8081 tigrisdata/tigris-local:latest
 ```
 
 ## Compile and start the application
@@ -35,7 +35,8 @@ npm run build && npm run start
 
 ### Event Streaming
 
-Run the following command in a new terminal window to subscribe to user events
+Run the following command in a new terminal window to watch the events stream in
+real-time:
 
 ```shell
 curl -N -X POST localhost:8080/users/subscribe
@@ -70,12 +71,16 @@ curl localhost:8080/products/create \
     -X POST \
     -H 'Content-Type: application/json' \
     -d '{"name":"Avocado","price":10,"quantity":5}'
+```
 
+```shell
 curl localhost:8080/products/create \
     -X POST \
     -H 'Content-Type: application/json' \
     -d '{"name":"Avocado Oil","price":80,"quantity":15}'
-    
+```
+
+```shell
 curl localhost:8080/products/create \
     -X POST \
     -H 'Content-Type: application/json' \
@@ -87,8 +92,11 @@ curl localhost:8080/products/create \
 Now go ahead and confirm that data has been persisted in DB
 
 ```shell
-curl http://localhost:8080/users/all
-curl http://localhost:8080/products/all
+curl http://localhost:8080/users
+```
+
+```shell
+curl http://localhost:8080/products
 ```
 
 ### Search
