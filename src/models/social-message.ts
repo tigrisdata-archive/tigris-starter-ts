@@ -1,19 +1,19 @@
 import {
-    TigrisTopicType,
-    TigrisDataTypes,
-    TigrisSchema
+  TigrisTopicType,
+  TigrisDataTypes,
+  TigrisSchema,
 } from "@tigrisdata/core/dist/types";
 
 export interface SocialMessage extends TigrisTopicType {
-    nickName: string;
-    message: string;
+  nickName: string;
+  message: string;
 }
 
 export const socialMessageSchema: TigrisSchema<SocialMessage> = {
-    nickName: {
-        type: TigrisDataTypes.STRING
-    },
-    message: {
-        type: TigrisDataTypes.STRING
-    }
+  nickName: {
+    type: TigrisDataTypes.STRING,
+  },
+  message: {
+    type: TigrisDataTypes.STRING,
+  },
 };
