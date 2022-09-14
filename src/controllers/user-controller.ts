@@ -7,7 +7,6 @@ import {SearchRequest, SearchResult} from "@tigrisdata/core/dist/search/types";
 
 enum UserEventTypes {
     UserCreated = 'user_created',
-    UserUpdated = 'user_updated',
     UserDeleted = 'user_deleted'
 }
 

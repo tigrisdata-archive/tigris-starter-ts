@@ -4,9 +4,11 @@ import {User, userSchema} from "./models/user";
 import {Product, productSchema} from "./models/product";
 import {Order, orderSchema} from "./models/order";
 import {UserEvent, userEventSchema} from "./models/user-event";
+import {SocialMessage, socialMessageSchema} from "./models/social-message";
 import {UserController} from "./controllers/user-controller";
 import {ProductController} from "./controllers/product-controller";
 import {OrderController} from "./controllers/order-controller";
+import {SocialMessageController} from "./controllers/social-message-controller";
 
 export class App {
     private readonly app: express.Application;
@@ -43,7 +45,8 @@ export class App {
             this.db.createOrUpdateCollection<User>('users', userSchema),
             this.db.createOrUpdateCollection<Product>('products', productSchema),
             this.db.createOrUpdateCollection<Order>('orders', orderSchema),
-            this.db.createOrUpdateTopic<UserEvent>('user_events', userEventSchema)
+            this.db.createOrUpdateTopic<UserEvent>('user_events', userEventSchema),
+            this.db.createOrUpdateTopic('social_messages', socialMessageSchema)
         ]);
     }
 
@@ -51,6 +54,7 @@ export class App {
         new UserController(this.db, this.app);
         new ProductController(this.db, this.app);
         new OrderController(this.db, this.app);
+        new SocialMessageController(this.db, this.app);
     }
 
     public start() {
