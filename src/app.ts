@@ -46,7 +46,7 @@ export class App {
             this.db.createOrUpdateCollection<Product>('products', productSchema),
             this.db.createOrUpdateCollection<Order>('orders', orderSchema),
             this.db.createOrUpdateTopic<UserEvent>('user_events', userEventSchema),
-            this.db.createOrUpdateTopic('social_messages', socialMessageSchema)
+            this.db.createOrUpdateTopic<SocialMessage>('social_messages', socialMessageSchema)
         ]);
     }
 
