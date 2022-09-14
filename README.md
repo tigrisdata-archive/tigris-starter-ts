@@ -123,6 +123,28 @@ curl localhost:8080/products/search \
       }'
 ```
 
+# Contributing
+
+## Code Quality
+
+### 1. Linting
+
+The coding style rules are defined by [Prettier](https://prettier.io/) and
+enforced by [Eslint](https://eslint.org)
+
+### 2. Git Hooks
+
+We use [pre-commit](https://pre-commit.com/index.html) to automatically
+setup and run git hooks.
+
+Install the pre-commit hooks as follows:
+
+```shell
+pre-commit install
+```
+
+On every `git commit` we check the code quality using prettier and eslint.
+
 # License
 
 This software is licensed under the [Apache 2.0](LICENSE).
