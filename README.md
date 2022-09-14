@@ -2,12 +2,12 @@
 
 [![ts-ci](https://github.com/tigrisdata/tigris-starter-ts/actions/workflows/ts-ci.yml/badge.svg?branch=main)](https://github.com/tigrisdata/tigris-starter-ts/actions/workflows/ts-ci.yml)
 
-This is a TypeScript web application that demonstrates a basic version of an 
+This is a TypeScript web application that demonstrates a basic version of an
 ecommerce application that handles user, products and orders. The application
-demonstrates CRUD, search and event streaming functionality of Tigris. 
+demonstrates CRUD, search and event streaming functionality of Tigris.
 The application uses express framework.
 
-For more information please refer to: 
+For more information please refer to:
 [Tigris documentation](https://docs.tigrisdata.com)
 
 ## Clone the repo
@@ -55,7 +55,7 @@ curl localhost:8080/users/create \
     -d '{"name":"John","balance":100}'
 ```
 
-```shell    
+```shell
 curl localhost:8080/users/create \
     -X POST \
     -H 'Content-Type: application/json' \
@@ -89,7 +89,7 @@ curl localhost:8080/products/create \
 
 #### Read all users and products
 
-Now go ahead and confirm that data has been persisted in DB
+Now go ahead and confirm that the records have been persisted
 
 ```shell
 curl http://localhost:8080/users
