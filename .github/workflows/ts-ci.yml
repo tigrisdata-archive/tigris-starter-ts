@@ -20,4 +20,5 @@ jobs:
       - run: |
           npm install
           npx prettier --check .
+          npx eslint .
           npm run build
