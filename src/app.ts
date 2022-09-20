@@ -21,6 +21,19 @@ export class App {
     this.app = express();
     this.port = 8080;
     this.dbName = "tigris_starter_ts";
+
+    /*
+
+    // For the Tigris preview environment use following initialization instead.
+    this.tigris = new Tigris({
+      serverUrl: "api.preview.tigrisdata.cloud:443",
+      insecureChannel: false,
+      applicationId: "your-tigris-app-id",
+      applicationSecret: "your-tigris-app-secret"
+    });
+
+    */
+
     this.tigris = new Tigris({
       serverUrl: "localhost:8081",
       insecureChannel: true,
