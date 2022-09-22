@@ -28,8 +28,8 @@ export class App {
     this.tigris = new Tigris({
       serverUrl: "api.preview.tigrisdata.cloud:443",
       insecureChannel: false,
-      applicationId: "your-tigris-app-id",
-      applicationSecret: "your-tigris-app-secret"
+      clientId: "your-tigris-client-id",
+      clientSecret: "your-tigris-client-secret"
     });
 
     */
