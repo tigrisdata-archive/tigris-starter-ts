@@ -26,8 +26,7 @@ export class App {
 
     // For the Tigris preview environment use following initialization instead.
     this.tigris = new Tigris({
-      serverUrl: "api.preview.tigrisdata.cloud:443",
-      insecureChannel: false,
+      serverUrl: "api.preview.tigrisdata.cloud",
       clientId: "your-tigris-client-id",
       clientSecret: "your-tigris-client-secret"
     });
