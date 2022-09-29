@@ -41,7 +41,7 @@
   },
   "homepage": "https://github.com/tigrisdata/tigris-starter-ts#readme",
   "dependencies": {
-    "@tigrisdata/core": "^1.0.0-beta.4",
+    "@tigrisdata/core": "^1.0.0-beta.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1"
   },

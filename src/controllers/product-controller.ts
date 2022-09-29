@@ -26,7 +26,7 @@ export class ProductController implements Controller {
   ) => {
     this.products
       .findOne({
-        productId: Number.parseInt(req.params.id),
+        productId: req.params.id,
       })
       .then((product) => {
         if (product !== undefined) {
@@ -104,7 +104,7 @@ export class ProductController implements Controller {
   ) => {
     this.products
       .delete({
-        productId: Number.parseInt(req.params.id),
+        productId: req.params.id,
       })
       .then((response) => {
         res.status(200).json(response);

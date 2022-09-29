@@ -5,14 +5,14 @@ import {
 } from "@tigrisdata/core/dist/types";
 
 export interface User extends TigrisCollectionType {
-  userId?: number;
+  userId?: string;
   name: string;
   balance: number;
 }
 
 export const userSchema: TigrisSchema<User> = {
   userId: {
-    type: TigrisDataTypes.INT32,
+    type: TigrisDataTypes.INT64,
     primary_key: {
       order: 1,
       autoGenerate: true,
