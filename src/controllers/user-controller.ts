@@ -30,7 +30,7 @@ export class UserController implements Controller {
   public getUser = async (req: Request, res: Response, next: NextFunction) => {
     this.users
       .findOne({
-        userId: Number.parseInt(req.params.id),
+        userId: req.params.id,
       })
       .then((user) => {
         if (user !== undefined) {
@@ -116,7 +116,7 @@ export class UserController implements Controller {
     res: Response,
     next: NextFunction
   ) => {
-    const userId = Number.parseInt(req.params.id);
+    const userId = req.params.id;
 
     this.users
       .delete({

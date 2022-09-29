@@ -20,7 +20,7 @@ export class OrderController implements Controller {
   public getOrder = async (req: Request, res: Response, next: NextFunction) => {
     this.orders
       .findOne({
-        orderId: Number.parseInt(req.params.id),
+        orderId: req.params.id,
       })
       .then((order) => {
         if (order !== undefined) {
@@ -60,7 +60,7 @@ export class OrderController implements Controller {
   ) => {
     this.orders
       .delete({
-        orderId: Number.parseInt(req.params.id),
+        orderId: req.params.id,
       })
       .then((response) => {
         res.status(200).json(response);

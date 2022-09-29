@@ -5,20 +5,20 @@ import {
 } from "@tigrisdata/core/dist/types";
 
 export interface Order extends TigrisCollectionType {
-  orderId?: number;
-  userId: number;
+  orderId?: string;
+  userId: string;
   productItems: ProductItem[];
   orderTotal: number;
 }
 
 export interface ProductItem {
-  productId: number;
+  productId: string;
   quantity: number;
 }
 
 const productItemSchema: TigrisSchema<ProductItem> = {
   productId: {
-    type: TigrisDataTypes.INT32,
+    type: TigrisDataTypes.INT64,
   },
   quantity: {
     type: TigrisDataTypes.INT32,
@@ -26,14 +26,14 @@ const productItemSchema: TigrisSchema<ProductItem> = {
 };
 export const orderSchema: TigrisSchema<Order> = {
   orderId: {
-    type: TigrisDataTypes.INT32,
+    type: TigrisDataTypes.INT64,
     primary_key: {
       order: 1,
       autoGenerate: true,
     },
   },
   userId: {
-    type: TigrisDataTypes.INT32,
+    type: TigrisDataTypes.INT64,
   },
   orderTotal: {
     type: TigrisDataTypes.NUMBER,

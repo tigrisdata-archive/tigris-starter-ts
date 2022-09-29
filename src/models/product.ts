@@ -5,7 +5,7 @@ import {
 } from "@tigrisdata/core/dist/types";
 
 export interface Product extends TigrisCollectionType {
-  productId?: number;
+  productId?: string;
   name: string;
   quantity: number;
   price: number;
@@ -13,7 +13,7 @@ export interface Product extends TigrisCollectionType {
 
 export const productSchema: TigrisSchema<Product> = {
   productId: {
-    type: TigrisDataTypes.INT32,
+    type: TigrisDataTypes.INT64,
     primary_key: {
       order: 1,
       autoGenerate: true,
