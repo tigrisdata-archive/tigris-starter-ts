@@ -3,10 +3,7 @@ import { Collection, DB, Topic } from "@tigrisdata/core";
 import { User } from "../models/user";
 import { UserEvent } from "../models/user-event";
 import { Controller } from "./controller";
-import {
-  SearchRequest,
-  SearchResult,
-} from "@tigrisdata/core/dist/search/types";
+import { SearchRequest } from "@tigrisdata/core/dist/search/types";
 
 enum UserEventTypes {
   UserCreated = "user_created",
@@ -50,17 +47,15 @@ export class UserController implements Controller {
     next: NextFunction
   ) => {
     const userList: User[] = [];
-    this.users.findAllStream({
-      onEnd() {
-        res.status(200).json(userList);
-      },
-      onNext(doc: User) {
+    const cursor = this.users.findMany();
+    try {
+      for await (const doc of cursor) {
         userList.push(doc);
-      },
-      onError(error: Error) {
-        next(error);
-      },
-    });
+      }
+    } catch (error) {
+      next(error);
+    }
+    res.status(200).json(userList);
   };
 
   public searchUsers = async (
@@ -71,18 +66,15 @@ export class UserController implements Controller {
     const searchRequest: SearchRequest<User> = req.body;
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
-    this.users.search(searchRequest, {
-      onNext(result: SearchResult<User>) {
+    const resultStream = this.users.searchStream(searchRequest);
+    try {
+      for await (const result of resultStream) {
         res.write(JSON.stringify(result));
-      },
-      onError(error: Error) {
-        res.end();
-        next(error);
-      },
-      onEnd() {
-        res.end();
-      },
-    });
+      }
+    } catch (error) {
+      next(error);
+    }
+    res.end();
   };
 
   public createUser = async (
@@ -92,7 +84,7 @@ export class UserController implements Controller {
   ) => {
     const user: User = req.body;
     this.users
-      .insert(user)
+      .insertOne(user)
       .then((user) => {
         res.status(200).json(user);
         return user;

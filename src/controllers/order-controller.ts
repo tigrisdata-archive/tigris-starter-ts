@@ -40,17 +40,16 @@ export class OrderController implements Controller {
     next: NextFunction
   ) => {
     const ordersList: Order[] = [];
-    this.orders.findAllStream({
-      onEnd() {
-        res.status(200).json(ordersList);
-      },
-      onNext(doc: Order) {
+    const ordersCursor = this.orders.findMany();
+    try {
+      for await (const doc of ordersCursor) {
         ordersList.push(doc);
-      },
-      onError(error: Error) {
-        next(error);
-      },
-    });
+      }
+    } catch (error) {
+      next(error);
+    }
+
+    res.status(200).json(ordersList);
   };
 
   public deleteOrder = async (

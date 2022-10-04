@@ -2,10 +2,7 @@ import express, { NextFunction, Request, Response, Router } from "express";
 import { Collection, DB } from "@tigrisdata/core";
 import { Product } from "../models/product";
 import { Controller } from "./controller";
-import {
-  SearchRequest,
-  SearchResult,
-} from "@tigrisdata/core/dist/search/types";
+import { SearchRequest } from "@tigrisdata/core/dist/search/types";
 
 export class ProductController implements Controller {
   private readonly products: Collection<Product>;
@@ -45,18 +42,11 @@ export class ProductController implements Controller {
     res: Response,
     next: NextFunction
   ) => {
-    const productList: Product[] = [];
-    this.products.findAllStream({
-      onEnd() {
-        res.status(200).json(productList);
-      },
-      onNext(doc: Product) {
-        productList.push(doc);
-      },
-      onError(error: Error) {
-        next(error);
-      },
-    });
+    const cursor = this.products.findMany();
+    cursor
+      .toArray()
+      .then((productList) => res.status(200).json(productList))
+      .catch((error) => next(error));
   };
 
   public searchProducts = async (
@@ -67,18 +57,15 @@ export class ProductController implements Controller {
     const searchRequest: SearchRequest<Product> = req.body;
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
-    this.products.search(searchRequest, {
-      onNext(result: SearchResult<Product>) {
+    const resultStream = this.products.searchStream(searchRequest);
+    try {
+      for await (const result of resultStream) {
         res.write(JSON.stringify(result));
-      },
-      onError(error: Error) {
-        res.end();
-        next(error);
-      },
-      onEnd() {
-        res.end();
-      },
-    });
+      }
+    } catch (error) {
+      next(error);
+    }
+    res.end();
   };
 
   public createProduct = async (
@@ -88,7 +75,7 @@ export class ProductController implements Controller {
   ) => {
     const product: Product = req.body;
     this.products
-      .insert(product)
+      .insertOne(product)
       .then((product) => {
         res.status(200).json(product);
       })
