@@ -3,9 +3,7 @@ import { Collection, DB, Topic } from "@tigrisdata/core";
 import { User } from "../models/user";
 import { UserEvent } from "../models/user-event";
 import { Controller } from "./controller";
-import {
-  SearchRequest,
-} from "@tigrisdata/core/dist/search/types";
+import { SearchRequest } from "@tigrisdata/core/dist/search/types";
 
 enum UserEventTypes {
   UserCreated = "user_created",

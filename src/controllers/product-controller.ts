@@ -2,9 +2,7 @@ import express, { NextFunction, Request, Response, Router } from "express";
 import { Collection, DB } from "@tigrisdata/core";
 import { Product } from "../models/product";
 import { Controller } from "./controller";
-import {
-  SearchRequest,
-} from "@tigrisdata/core/dist/search/types";
+import { SearchRequest } from "@tigrisdata/core/dist/search/types";
 
 export class ProductController implements Controller {
   private readonly products: Collection<Product>;
@@ -44,16 +42,11 @@ export class ProductController implements Controller {
     res: Response,
     next: NextFunction
   ) => {
-    const productList: Product[] = [];
     const cursor = this.products.findMany();
-    try {
-      for await (const doc of cursor) {
-        productList.push(doc);
-      }
-    } catch (error) {
-      next(error);
-    }
-    res.status(200).json(productList);
+    cursor
+      .toArray()
+      .then((productList) => res.status(200).json(productList))
+      .catch((error) => next(error));
   };
 
   public searchProducts = async (
