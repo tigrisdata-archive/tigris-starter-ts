@@ -10,6 +10,9 @@ import { ProductController } from "./controllers/product-controller";
 import { OrderController } from "./controllers/order-controller";
 import { SocialMessageController } from "./controllers/social-message-controller";
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 export class App {
   private readonly app: express.Application;
   private readonly port: string | number;
@@ -22,27 +25,25 @@ export class App {
     this.port = 8080;
     this.dbName = "tigris_starter_ts";
 
-    /*
-
-    // For the Tigris preview environment use following initialization instead.
+    // For the Tigris preview environment use the following initialization.
     this.tigris = new Tigris({
       serverUrl: "api.preview.tigrisdata.cloud",
-      clientId: "your-tigris-client-id",
-      clientSecret: "your-tigris-client-secret"
+      clientId: process.env.TIGRIS_CLIENT_ID,
+      clientSecret: process.env.TIGRIS_CLIENT_SECRET,
     });
 
-    */
-
-    this.tigris = new Tigris({
-      serverUrl: "localhost:8081",
-      insecureChannel: true,
-    });
+    // For the Tigris local environment use the following initialization.
+    // this.tigris = new Tigris({
+    //   serverUrl: "localhost:8081",
+    //   insecureChannel: true,
+    // });
 
     this.setup();
   }
 
   public async setup() {
     this.app.use(express.json());
+    this.app.use(express.static("public"));
     await this.initializeTigris();
     await this.setupControllers();
   }
@@ -58,10 +59,7 @@ export class App {
       this.db.createOrUpdateCollection<Product>("products", productSchema),
       this.db.createOrUpdateCollection<Order>("orders", orderSchema),
       this.db.createOrUpdateTopic<UserEvent>("user_events", userEventSchema),
-      this.db.createOrUpdateTopic<SocialMessage>(
-        "social_messages",
-        socialMessageSchema
-      ),
+      this.db.createOrUpdateTopic<SocialMessage>("social_messages", socialMessageSchema),
     ]);
   }
 

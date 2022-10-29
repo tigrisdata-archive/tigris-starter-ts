@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Tigris real-time example</title>
+  </head>
+  <body>
+    <label for="nickName">Nick name</label>
+    <input type="text" placeholder="Nick name" id="nickName" />
+    <label for="message">Message</label>
+    <input type="text" placeholder="Message" id="message" />
+    <button onclick="addNewMessage()">Send message</button>
+    <table class="messages">
+      <thead>
+        <tr>
+          <th>NickName</th>
+          <th>Message</th>
+        </tr>
+      </thead>
+      <tbody id="messages-table"></tbody>
+    </table>
+    <script>
+      // publish new messages
+      function addNewMessage() {
+        const nickNameInput = document.getElementById("nickName");
+        const messageInput = document.getElementById("message");
+        const nickName = nickNameInput.value;
+        const message = messageInput.value;
+        nickNameInput.value = "";
+        messageInput.value = "";
+        fetch(`/social-messages/publish`, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({nickName, message})
+        });
+      }
+
+      // listen for new messages
+      fetch(`/social-messages/subscribe`, {
+        method: "POST",
+      }).then(async (response) => {
+        const streamReader = response.body.getReader();
+        while (true) {
+          const { value, done } = await streamReader.read();
+          if (done) break;
+          const string = new TextDecoder().decode(value);
+          const strLines = string.split("\n");
+          for (let i in strLines) {
+            if (strLines[i].length === 0) continue;
+            let message = JSON.parse(strLines[i]);
+            const newMessageRow = document.createElement("tr");
+            newMessageRow.innerHTML = `<td>${message.nickName}</td><td>${message.message}</td>`;
+            document
+              .getElementById("messages-table")
+              .appendChild(newMessageRow);
+          }
+        }
+      }).catch(error => {
+        console.error(error)
+      });
+    </script>
+  </body>
+</html>
