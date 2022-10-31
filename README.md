@@ -25,7 +25,16 @@ Startup local Tigris development environment listening on port 8081:
 docker run -d -p 8081:8081 tigrisdata/tigris-local:latest
 ```
 
-## Compile and start the application
+## Configure, compile and start the application
+
+Create a `.env` file in the root of the application and add Tigris Data application client ID and client secret configuration.
+
+```
+TIGRIS_CLIENT_ID='your-tigris-data-app-client-id`
+TIGRIS_CLIENT_SECRET='your-tigris-data-app-client-secret`
+```
+
+Compile and start the application:
 
 ```shell
 npm run build && npm run start
@@ -35,12 +44,30 @@ npm run build && npm run start
 
 ### Event Streaming
 
-Run the following command in a new terminal window to watch the events stream in
+Run the following command in a new terminal window to watch user events stream in
 real-time:
 
 ```shell
 curl -N -X POST localhost:8080/users/subscribe
 ```
+
+Run the following command in a new terminal window to watch social message events stream in
+real-time:
+
+```shell
+curl -N -X POST localhost:8080/social-messages/subscribe
+```
+
+Run the following command in a new terminal to publish social message events:
+
+```shell
+curl localhost:8080/social-messages/publish \
+    -X POST \
+    -H 'Content-Type: application/json' \
+    -d '{"nickName":"John","message":"Real-time event streams with Tigris Data!"}'
+```
+
+You can also try out the publish and subscribe functionality in the browser by visiting http://localhost:8080.
 
 ### CRUD operations
 
