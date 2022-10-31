@@ -25,9 +25,9 @@ Startup local Tigris development environment listening on port 8081:
 docker run -d -p 8081:8081 tigrisdata/tigris-local:latest
 ```
 
-## Configure, compile and start the application
+## Tigris Cloud Environment
 
-Create a `.env` file in the root of the application and add Tigris Data application client ID and client secret configuration.
+Create a `.env` file in the root of the application and add [Tigris Data application client ID and client secret](https://docs.tigrisdata.com/auth/) configuration.
 
 ```
 TIGRIS_CLIENT_ID='your-tigris-data-app-client-id`

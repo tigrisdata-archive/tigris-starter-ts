@@ -90,7 +90,7 @@ export class ProductController implements Controller {
     next: NextFunction
   ) => {
     this.products
-      .delete({
+      .deleteOne({
         productId: req.params.id,
       })
       .then((response) => {

@@ -10,9 +10,6 @@ import { ProductController } from "./controllers/product-controller";
 import { OrderController } from "./controllers/order-controller";
 import { SocialMessageController } from "./controllers/social-message-controller";
 
-import dotenv from 'dotenv';
-dotenv.config();
-
 export class App {
   private readonly app: express.Application;
   private readonly port: string | number;
@@ -26,11 +23,8 @@ export class App {
     this.dbName = "tigris_starter_ts";
 
     // For the Tigris preview environment use the following initialization.
-    this.tigris = new Tigris({
-      serverUrl: "api.preview.tigrisdata.cloud",
-      clientId: process.env.TIGRIS_CLIENT_ID,
-      clientSecret: process.env.TIGRIS_CLIENT_SECRET,
-    });
+    // Configuration input is supplied from .env file - refer to README.md
+    this.tigris = new Tigris();
 
     // For the Tigris local environment use the following initialization.
     // this.tigris = new Tigris({
@@ -59,7 +53,10 @@ export class App {
       this.db.createOrUpdateCollection<Product>("products", productSchema),
       this.db.createOrUpdateCollection<Order>("orders", orderSchema),
       this.db.createOrUpdateTopic<UserEvent>("user_events", userEventSchema),
-      this.db.createOrUpdateTopic<SocialMessage>("social_messages", socialMessageSchema),
+      this.db.createOrUpdateTopic<SocialMessage>(
+        "social_messages",
+        socialMessageSchema
+      ),
     ]);
   }
 

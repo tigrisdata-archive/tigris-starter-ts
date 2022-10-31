@@ -38,33 +38,35 @@
           headers: {
             "content-type": "application/json",
           },
-          body: JSON.stringify({nickName, message})
+          body: JSON.stringify({ nickName, message }),
         });
       }
 
       // listen for new messages
       fetch(`/social-messages/subscribe`, {
         method: "POST",
-      }).then(async (response) => {
-        const streamReader = response.body.getReader();
-        while (true) {
-          const { value, done } = await streamReader.read();
-          if (done) break;
-          const string = new TextDecoder().decode(value);
-          const strLines = string.split("\n");
-          for (let i in strLines) {
-            if (strLines[i].length === 0) continue;
-            let message = JSON.parse(strLines[i]);
-            const newMessageRow = document.createElement("tr");
-            newMessageRow.innerHTML = `<td>${message.nickName}</td><td>${message.message}</td>`;
-            document
-              .getElementById("messages-table")
-              .appendChild(newMessageRow);
+      })
+        .then(async (response) => {
+          const streamReader = response.body.getReader();
+          while (true) {
+            const { value, done } = await streamReader.read();
+            if (done) break;
+            const string = new TextDecoder().decode(value);
+            const strLines = string.split("\n");
+            for (let i in strLines) {
+              if (strLines[i].length === 0) continue;
+              let message = JSON.parse(strLines[i]);
+              const newMessageRow = document.createElement("tr");
+              newMessageRow.innerHTML = `<td>${message.nickName}</td><td>${message.message}</td>`;
+              document
+                .getElementById("messages-table")
+                .appendChild(newMessageRow);
+            }
           }
-        }
-      }).catch(error => {
-        console.error(error)
-      });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     </script>
   </body>
 </html>

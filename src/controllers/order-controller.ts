@@ -58,7 +58,7 @@ export class OrderController implements Controller {
     next: NextFunction
   ) => {
     this.orders
-      .delete({
+      .deleteOne({
         orderId: req.params.id,
       })
       .then((response) => {
