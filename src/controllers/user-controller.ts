@@ -111,7 +111,7 @@ export class UserController implements Controller {
     const userId = req.params.id;
 
     this.users
-      .delete({
+      .deleteOne({
         userId: userId,
       })
       .then((response) => {

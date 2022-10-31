@@ -8,7 +8,8 @@
     "lint": "node ./node_modules/eslint/bin/eslint src/**/*.ts",
     "lint-fix": "node ./node_modules/eslint/bin/eslint --fix src/**/*.ts",
     "prettify": "npx prettier --write .",
-    "build": "npm run clean && npm install && npm run lint && npx tsc",
+    "prettier-check": "npx prettier --check .",
+    "build": "npm run clean && npm install &&  npx eslint . && npm run prettier-check && npm run lint && npx tsc",
     "start": "node dist/index.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
   },
@@ -42,8 +43,7 @@
   },
   "homepage": "https://github.com/tigrisdata/tigris-starter-ts#readme",
   "dependencies": {
-    "@tigrisdata/core": "^1.0.0-beta.6",
-    "dotenv": "^16.0.3",
+    "@tigrisdata/core": "^1.0.0-beta.14",
     "express": "^4.18.1"
   },
   "devDependencies": {
