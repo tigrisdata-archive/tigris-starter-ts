@@ -34,6 +34,11 @@ TIGRIS_CLIENT_ID='your-tigris-data-app-client-id`
 TIGRIS_CLIENT_SECRET='your-tigris-data-app-client-secret`
 ```
 
+## Create your project
+
+Either follow steps on Cloud console or CLI to create project and set the
+`TIGRIS_PROJECT` in .env file
+
 Compile and start the application:
 
 ```shell
@@ -41,33 +46,6 @@ npm run build && npm run start
 ```
 
 ## Test the application
-
-### Event Streaming
-
-Run the following command in a new terminal window to watch user events stream in
-real-time:
-
-```shell
-curl -N -X POST localhost:8080/users/subscribe
-```
-
-Run the following command in a new terminal window to watch social message events stream in
-real-time:
-
-```shell
-curl -N -X POST localhost:8080/social-messages/subscribe
-```
-
-Run the following command in a new terminal to publish social message events:
-
-```shell
-curl localhost:8080/social-messages/publish \
-    -X POST \
-    -H 'Content-Type: application/json' \
-    -d '{"nickName":"John","message":"Real-time event streams with Tigris Data!"}'
-```
-
-You can also try out the publish and subscribe functionality in the browser by visiting http://localhost:8080.
 
 ### CRUD operations
 

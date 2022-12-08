@@ -1,14 +1,11 @@
 import express from "express";
 import { DB, Tigris } from "@tigrisdata/core";
-import { User, userSchema } from "./models/user";
-import { Product, productSchema } from "./models/product";
-import { Order, orderSchema } from "./models/order";
-import { UserEvent, userEventSchema } from "./models/user-event";
-import { SocialMessage, socialMessageSchema } from "./models/social-message";
 import { UserController } from "./controllers/user-controller";
 import { ProductController } from "./controllers/product-controller";
 import { OrderController } from "./controllers/order-controller";
-import { SocialMessageController } from "./controllers/social-message-controller";
+import { User, userSchema } from "./models/user";
+import { Product, productSchema } from "./models/product";
+import { Order, orderSchema } from "./models/order";
 
 export class App {
   private readonly app: express.Application;
@@ -20,7 +17,7 @@ export class App {
   constructor() {
     this.app = express();
     this.port = 8080;
-    this.dbName = "tigris_starter_ts";
+    this.dbName = "foo";
 
     // For the Tigris preview environment use the following initialization.
     // Configuration input is supplied from .env file - refer to README.md
@@ -43,20 +40,12 @@ export class App {
   }
 
   public async initializeTigris() {
-    // create database (if not exists)
-    this.db = await this.tigris.createDatabaseIfNotExists(this.dbName);
-    console.log("db: " + this.dbName + " created successfully");
-
+    this.db = await this.tigris.getDatabase();
     // register collections schema and wait for it to finish
     await Promise.all([
       this.db.createOrUpdateCollection<User>("users", userSchema),
       this.db.createOrUpdateCollection<Product>("products", productSchema),
       this.db.createOrUpdateCollection<Order>("orders", orderSchema),
-      this.db.createOrUpdateTopic<UserEvent>("user_events", userEventSchema),
-      this.db.createOrUpdateTopic<SocialMessage>(
-        "social_messages",
-        socialMessageSchema
-      ),
     ]);
   }
 
@@ -64,7 +53,6 @@ export class App {
     new UserController(this.db, this.app);
     new ProductController(this.db, this.app);
     new OrderController(this.db, this.app);
-    new SocialMessageController(this.db, this.app);
   }
 
   public start() {

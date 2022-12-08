@@ -2,10 +2,10 @@ import {
   TigrisCollectionType,
   TigrisDataTypes,
   TigrisSchema,
-} from "@tigrisdata/core/dist/types";
+} from "@tigrisdata/core";
 
 export interface User extends TigrisCollectionType {
-  userId?: string;
+  userId?: number;
   name: string;
   balance: number;
 }

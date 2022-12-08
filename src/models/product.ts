@@ -2,7 +2,7 @@ import {
   TigrisCollectionType,
   TigrisDataTypes,
   TigrisSchema,
-} from "@tigrisdata/core/dist/types";
+} from "@tigrisdata/core";
 
 export interface Product extends TigrisCollectionType {
   productId?: string;
