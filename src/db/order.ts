@@ -4,19 +4,12 @@ import {
   TigrisCollection,
   TigrisDataTypes,
 } from "@tigrisdata/core";
-
-export class Product {
-  @PrimaryKey(TigrisDataTypes.STRING, { order: 1 })
-  productId: string;
-
-  @Field(TigrisDataTypes.INT32)
-  quantity: number;
-}
+import { Product } from "./product";
 
 @TigrisCollection("orders")
 export class Order {
-  @PrimaryKey(TigrisDataTypes.STRING, { order: 1 })
-  orderId: string;
+  @PrimaryKey(TigrisDataTypes.INT64, { order: 1 })
+  orderId: number;
 
   @Field(TigrisDataTypes.INT64)
   userId: number;

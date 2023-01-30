@@ -5,10 +5,10 @@ import {
   TigrisDataTypes,
 } from "@tigrisdata/core";
 
-@TigrisCollection("products02")
+@TigrisCollection("products")
 export class Product {
-  @PrimaryKey(TigrisDataTypes.STRING, { order: 1, autoGenerate: true })
-  productId: string;
+  @PrimaryKey(TigrisDataTypes.INT64, { order: 1, autoGenerate: true })
+  productId: number;
 
   @Field(TigrisDataTypes.STRING)
   name: string;
