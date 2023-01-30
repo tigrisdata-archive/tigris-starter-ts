@@ -80,4 +80,3 @@ export class OrderController implements Controller {
     app.use("/", this.router);
   }
 }
-

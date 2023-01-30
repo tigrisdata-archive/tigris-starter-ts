@@ -5,7 +5,6 @@ import {
   TigrisDataTypes,
 } from "@tigrisdata/core";
 
-
 export class Product {
   @PrimaryKey(TigrisDataTypes.STRING, { order: 1 })
   productId: string;
@@ -14,7 +13,7 @@ export class Product {
   quantity: number;
 }
 
-@TigrisCollection('orders')
+@TigrisCollection("orders")
 export class Order {
   @PrimaryKey(TigrisDataTypes.STRING, { order: 1 })
   orderId: string;
@@ -28,4 +27,3 @@ export class Order {
   @Field(TigrisDataTypes.ARRAY, { elements: Product })
   productItems: Array<Product>;
 }
-
