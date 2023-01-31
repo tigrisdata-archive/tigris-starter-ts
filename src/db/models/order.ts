@@ -8,8 +8,8 @@ import { Product } from "./product";
 
 @TigrisCollection("orders")
 export class Order {
-  @PrimaryKey(TigrisDataTypes.INT64, { order: 1 })
-  orderId: string;
+  @PrimaryKey(TigrisDataTypes.INT64, { order: 1, autoGenerate: true })
+  orderId?: string;
 
   @Field(TigrisDataTypes.INT64)
   userId: number;

@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response, Router } from "express";
 import { DB, Collection } from "@tigrisdata/core";
-import { Order } from "../db/order";
+import { Order } from "../db/models/order";
 import { Controller } from "./controller";
 
 export class OrderController implements Controller {
@@ -79,4 +79,5 @@ export class OrderController implements Controller {
     this.router.delete(`${this.path}/:id`, this.deleteOrder);
     app.use("/", this.router);
   }
+
 }

@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response, Router } from "express";
 import { Collection, DB } from "@tigrisdata/core";
-import { Product } from "../db/product";
+import { Product } from "../db/models/product";
 import { Controller } from "./controller";
 
 export class ProductController implements Controller {

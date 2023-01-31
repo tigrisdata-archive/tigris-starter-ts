@@ -3,9 +3,9 @@ import { DB, Tigris } from "@tigrisdata/core";
 import { UserController } from "./controllers/user-controller";
 import { ProductController } from "./controllers/product-controller";
 import { OrderController } from "./controllers/order-controller";
-import { User } from "./db/user";
-import { Product } from "./db/product";
-import { Order } from "./db/order";
+import { User } from "./db/models/user";
+import { Product } from "./db/models/product";
+import { Order } from "./db/models/order";
 
 export class App {
   private readonly app: express.Application;
