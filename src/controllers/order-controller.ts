@@ -79,5 +79,4 @@ export class OrderController implements Controller {
     this.router.delete(`${this.path}/:id`, this.deleteOrder);
     app.use("/", this.router);
   }
-
 }
