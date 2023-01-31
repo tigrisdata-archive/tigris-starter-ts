@@ -19,7 +19,7 @@ export class UserController implements Controller {
     this.users
       .findOne({
         filter: {
-          userId: Number.parseInt(req.params.id),
+          userId: req.params.id,
         },
       })
       .then((user) => {
@@ -96,7 +96,7 @@ export class UserController implements Controller {
     res: Response,
     next: NextFunction
   ) => {
-    const userId = Number.parseInt(req.params.id);
+    const userId = req.params.id;
 
     this.users
       .deleteOne({

@@ -8,7 +8,7 @@ import {
 @TigrisCollection("users")
 export class User {
   @PrimaryKey(TigrisDataTypes.INT64, { order: 1, autoGenerate: true })
-  userId: number;
+  userId: string;
 
   @Field(TigrisDataTypes.STRING)
   name: string;
