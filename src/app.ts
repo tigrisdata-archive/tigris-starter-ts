@@ -3,31 +3,24 @@ import { DB, Tigris } from "@tigrisdata/core";
 import { UserController } from "./controllers/user-controller";
 import { ProductController } from "./controllers/product-controller";
 import { OrderController } from "./controllers/order-controller";
-import { User, userSchema } from "./models/user";
-import { Product, productSchema } from "./models/product";
-import { Order, orderSchema } from "./models/order";
+import { User } from "./db/models/user";
+import { Product } from "./db/models/product";
+import { Order } from "./db/models/order";
 
 export class App {
   private readonly app: express.Application;
   private readonly port: string | number;
   private readonly dbName: string;
-  private readonly tigris: Tigris;
-  private db: DB;
+  private readonly tigrisClient: Tigris;
+  private tigrisDB: DB;
 
   constructor() {
     this.app = express();
     this.port = 8080;
     this.dbName = "foo";
 
-    // For the Tigris preview environment use the following initialization.
-    // Configuration input is supplied from .env file - refer to README.md
-    this.tigris = new Tigris();
-
-    // For the Tigris local environment use the following initialization.
-    // this.tigris = new Tigris({
-    //   serverUrl: "localhost:8081",
-    //   insecureChannel: true,
-    // });
+    // setup client
+    this.tigrisClient = new Tigris();
 
     this.setup();
   }
@@ -40,19 +33,17 @@ export class App {
   }
 
   public async initializeTigris() {
-    this.db = await this.tigris.getDatabase();
-    // register collections schema and wait for it to finish
-    await Promise.all([
-      this.db.createOrUpdateCollection<User>("users", userSchema),
-      this.db.createOrUpdateCollection<Product>("products", productSchema),
-      this.db.createOrUpdateCollection<Order>("orders", orderSchema),
-    ]);
+    // ensure branch exists, create it if it needs to be created dynamically
+    await this.tigrisClient.getDatabase().initializeBranch();
+    // register schemas
+    await this.tigrisClient.registerSchemas([Product, User, Order]);
+    this.tigrisDB = this.tigrisClient.getDatabase();
   }
 
   public setupControllers() {
-    new UserController(this.db, this.app);
-    new ProductController(this.db, this.app);
-    new OrderController(this.db, this.app);
+    new UserController(this.tigrisDB, this.app);
+    new ProductController(this.tigrisDB, this.app);
+    new OrderController(this.tigrisDB, this.app);
   }
 
   public start() {

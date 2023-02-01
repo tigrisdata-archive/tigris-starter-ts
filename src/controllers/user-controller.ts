@@ -1,8 +1,7 @@
 import express, { NextFunction, Request, Response, Router } from "express";
 import { Collection, DB } from "@tigrisdata/core";
-import { User } from "../models/user";
+import { User } from "../db/models/user";
 import { Controller } from "./controller";
-import { SearchRequest } from "@tigrisdata/core/dist/search/types";
 
 export class UserController implements Controller {
   private readonly users: Collection<User>;
@@ -10,7 +9,7 @@ export class UserController implements Controller {
   private readonly path: string;
 
   constructor(db: DB, app: express.Application) {
-    this.users = db.getCollection<User>("users");
+    this.users = db.getCollection<User>(User);
     this.path = "/users";
     this.router = Router();
     this.setupRoutes(app);
@@ -19,7 +18,9 @@ export class UserController implements Controller {
   public getUser = async (req: Request, res: Response, next: NextFunction) => {
     this.users
       .findOne({
-        userId: Number.parseInt(req.params.id),
+        filter: {
+          userId: req.params.id,
+        },
       })
       .then((user) => {
         if (user !== undefined) {
@@ -55,14 +56,18 @@ export class UserController implements Controller {
     res: Response,
     next: NextFunction
   ) => {
-    const searchRequest: SearchRequest<User> = req.body;
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "application/json");
-    const resultStream = this.users.searchStream(searchRequest);
     try {
-      for await (const result of resultStream) {
-        res.write(JSON.stringify(result));
+      const query = req.body.query;
+      if (query === undefined) {
+        res.status(400).json({ error: "No search query found in request" });
+        return;
       }
+      const searchResult = await this.users.search({ q: query as string });
+      const resultStream = new Array<User>();
+      for await (const res of searchResult) {
+        for (const hit of res.hits) resultStream.push(hit.document);
+      }
+      res.status(200).json(resultStream);
     } catch (error) {
       next(error);
     }
@@ -91,11 +96,13 @@ export class UserController implements Controller {
     res: Response,
     next: NextFunction
   ) => {
-    const userId = Number.parseInt(req.params.id);
+    const userId = req.params.id;
 
     this.users
       .deleteOne({
-        userId: userId,
+        filter: {
+          userId: userId,
+        },
       })
       .then((response) => {
         res.status(200).json(response);

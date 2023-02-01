@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response, Router } from "express";
-import { Collection, DB } from "@tigrisdata/core";
-import { Order } from "../models/order";
+import { DB, Collection } from "@tigrisdata/core";
+import { Order } from "../db/models/order";
 import { Controller } from "./controller";
 
 export class OrderController implements Controller {
@@ -10,7 +10,7 @@ export class OrderController implements Controller {
   private readonly path: string;
 
   constructor(db: DB, app: express.Application) {
-    this.orders = db.getCollection<Order>("orders");
+    this.orders = db.getCollection<Order>(Order);
     this.path = "/orders";
     this.router = Router();
     this.db = db;
@@ -20,7 +20,9 @@ export class OrderController implements Controller {
   public getOrder = async (req: Request, res: Response, next: NextFunction) => {
     this.orders
       .findOne({
-        orderId: req.params.id,
+        filter: {
+          orderId: req.params.id,
+        },
       })
       .then((order) => {
         if (order !== undefined) {
@@ -59,7 +61,9 @@ export class OrderController implements Controller {
   ) => {
     this.orders
       .deleteOne({
-        orderId: req.params.id,
+        filter: {
+          orderId: req.params.id,
+        },
       })
       .then((response) => {
         res.status(200).json(response);

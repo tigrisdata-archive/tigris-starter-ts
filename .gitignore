@@ -2,3 +2,6 @@
 node_modules
 dist
 .env
+.history
+# Local Netlify folder
+.netlify

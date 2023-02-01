@@ -1,8 +1,7 @@
 import express, { NextFunction, Request, Response, Router } from "express";
 import { Collection, DB } from "@tigrisdata/core";
-import { Product } from "../models/product";
+import { Product } from "../db/models/product";
 import { Controller } from "./controller";
-import { SearchRequest } from "@tigrisdata/core/dist/search/types";
 
 export class ProductController implements Controller {
   private readonly products: Collection<Product>;
@@ -10,7 +9,7 @@ export class ProductController implements Controller {
   private readonly path: string;
 
   constructor(db: DB, app: express.Application) {
-    this.products = db.getCollection<Product>("products");
+    this.products = db.getCollection<Product>(Product);
     this.path = "/products";
     this.router = Router();
     this.setupRoutes(app);
@@ -23,7 +22,9 @@ export class ProductController implements Controller {
   ) => {
     this.products
       .findOne({
-        productId: req.params.id,
+        filter: {
+          productId: req.params.id,
+        },
       })
       .then((product) => {
         if (product !== undefined) {
@@ -54,14 +55,18 @@ export class ProductController implements Controller {
     res: Response,
     next: NextFunction
   ) => {
-    const searchRequest: SearchRequest<Product> = req.body;
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "application/json");
-    const resultStream = this.products.searchStream(searchRequest);
     try {
-      for await (const result of resultStream) {
-        res.write(JSON.stringify(result));
+      const query = req.body.query;
+      if (query === undefined) {
+        res.status(400).json({ error: "No search query found in request" });
+        return;
       }
+      const searchResult = await this.products.search({ q: query as string });
+      const productHits = new Array<Product>();
+      for await (const res of searchResult) {
+        for (const hit of res.hits) productHits.push(hit.document);
+      }
+      res.status(200).json(productHits);
     } catch (error) {
       next(error);
     }
@@ -91,7 +96,9 @@ export class ProductController implements Controller {
   ) => {
     this.products
       .deleteOne({
-        productId: req.params.id,
+        filter: {
+          productId: req.params.id,
+        },
       })
       .then((response) => {
         res.status(200).json(response);
