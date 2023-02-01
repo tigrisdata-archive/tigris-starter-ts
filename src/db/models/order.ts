@@ -12,7 +12,7 @@ export class Order {
   orderId?: string;
 
   @Field(TigrisDataTypes.INT64)
-  userId: number;
+  userId: string;
 
   @Field(TigrisDataTypes.NUMBER)
   orderTotal: number;
